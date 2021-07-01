@@ -1,0 +1,13 @@
+D:\Test\Project_Socket\Server\bin\Debug\Server.exe.config
+D:\Test\Project_Socket\Server\bin\Debug\Server.exe
+D:\Test\Project_Socket\Server\bin\Debug\Server.pdb
+D:\Test\Project_Socket\Server\obj\Debug\Server.csproj.AssemblyReference.cache
+D:\Test\Project_Socket\Server\obj\Debug\Server.Properties.Resources.resources
+D:\Test\Project_Socket\Server\obj\Debug\Server.csproj.GenerateResource.cache
+D:\Test\Project_Socket\Server\obj\Debug\Server.csproj.CoreCompileInputs.cache
+D:\Test\Project_Socket\Server\obj\Debug\Server.exe
+D:\Test\Project_Socket\Server\obj\Debug\Server.pdb
+D:\Test\Project_Socket\Server\bin\Debug\Newtonsoft.Json.dll
+D:\Test\Project_Socket\Server\bin\Debug\Newtonsoft.Json.xml
+D:\Test\Project_Socket\Server\obj\Debug\Server.csproj.CopyComplete
+D:\Test\Project_Socket\Server\obj\Debug\Server.frmServer.resources
