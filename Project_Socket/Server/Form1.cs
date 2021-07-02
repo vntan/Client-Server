@@ -155,7 +155,7 @@ namespace Server
                 {
                     // read data client send
                     string code = reader.ReadLine();
-                    
+                    //MessageBox.Show(code);
                     if (!string.IsNullOrEmpty(code))
                     {
                         string[] words = code.Split(' ');

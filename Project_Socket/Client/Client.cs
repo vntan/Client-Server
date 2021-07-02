@@ -159,9 +159,12 @@ namespace Client
                 getusername.Enabled = true;
                 getpassword.Enabled = true;
                 status = "sign";
+
+                //Hai doi tuong: reader: Doc tu client; writer: Viet cho Server
                 stream = new NetworkStream(client);
                 reader = new StreamReader(stream);
                 writer = new StreamWriter(stream);
+
             }
             catch
             {
@@ -208,14 +211,14 @@ namespace Client
                 else
                     getExchange(data);
 
-            } catch
+            } catch  (Exception e)
             {
                 Close();
                 pressToConnect.Enabled = false;
                 signinbutton.Enabled = false;
                 signupbutton.Enabled = false;
                 searchbutton.Enabled = false;
-                MessageBox.Show("Error on recieving message, please reopen the client!");
+                MessageBox.Show("Error on recieving message, please reopen the client!" + e.ToString());
             }
         }
 
@@ -261,8 +264,6 @@ namespace Client
             if (client != null)
                 Close();
         }
-
-
 
         private void searchbutton_Click(object sender, EventArgs e)
         {
