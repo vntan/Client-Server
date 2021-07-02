@@ -149,7 +149,7 @@ namespace Server
                 var writer = new StreamWriter(stream);
                 writer.AutoFlush = true;
                 //Server sent data to client
-                writer.WriteLine("Code ");
+                writer.WriteLine("Code");
 
                 while (isContinue)
                 {
