@@ -148,17 +148,22 @@ namespace Server
                 var reader = new StreamReader(stream);
                 var writer = new StreamWriter(stream);
                 writer.AutoFlush = true;
-
+                //Server sent data to client
                 writer.WriteLine("Code: ");
 
                 while (isContinue)
                 {
+                    // read data client send
                     string code = reader.ReadLine();
-
+                    
                     if (!string.IsNullOrEmpty(code))
                     {
                         string[] words = code.Split(' ');
-
+                        /* Client code format send
+                         * Login Code: 10 Format: 10 <username> <password>
+                         * Register Code: 20 Format: 20 <username> <password>
+                         * Currency Code: 30 Format: 30 <exchange>
+                         */
 
                         switch (words[0])
                         {
@@ -228,7 +233,7 @@ namespace Server
 
         void connectServer()
         {
-            //MessageBox.Show(txtPort.Text);
+            //Create new server 
             Socket server = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
             server.ReceiveTimeout = 60000;
             server.SendTimeout = 60000;
@@ -236,6 +241,7 @@ namespace Server
             // Start listening.
             try
             {
+                // add IP & Port to server
                 int port = Int32.Parse(txtPort.Text);
                 server.Bind(new IPEndPoint(IPAddress.Parse(txtIP.Text), port));
                 server.Listen(20);
@@ -248,11 +254,13 @@ namespace Server
 
             while (true)
             {
+                // Accept all client connected
                 Socket client = server.Accept();
                 Thread processClient = new Thread(() =>
                 {
                     try
                     {
+                        // Process data that users sended
                         Process(client);
                     }
 
