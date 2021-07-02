@@ -18,3 +18,13 @@ D:\VS_disk\Socket_C#\Client-Server\Project_Socket\Client\obj\Debug\Client.csproj
 D:\VS_disk\Socket_C#\Client-Server\Project_Socket\Client\obj\Debug\Client.csproj.CoreCompileInputs.cache
 D:\VS_disk\Socket_C#\Client-Server\Project_Socket\Client\obj\Debug\Client.exe
 D:\VS_disk\Socket_C#\Client-Server\Project_Socket\Client\obj\Debug\Client.pdb
+D:\MMT\Client-Server\Project_Socket\Client\bin\Debug\Client.exe.config
+D:\MMT\Client-Server\Project_Socket\Client\bin\Debug\Client.exe
+D:\MMT\Client-Server\Project_Socket\Client\bin\Debug\Client.pdb
+D:\MMT\Client-Server\Project_Socket\Client\obj\Debug\Client.Client.resources
+D:\MMT\Client-Server\Project_Socket\Client\obj\Debug\Client.Properties.Resources.resources
+D:\MMT\Client-Server\Project_Socket\Client\obj\Debug\Client.csproj.GenerateResource.cache
+D:\MMT\Client-Server\Project_Socket\Client\obj\Debug\Client.csproj.CoreCompileInputs.cache
+D:\MMT\Client-Server\Project_Socket\Client\obj\Debug\Client.exe
+D:\MMT\Client-Server\Project_Socket\Client\obj\Debug\Client.pdb
+D:\MMT\Client-Server\Project_Socket\Client\obj\Debug\Client.csproj.AssemblyReference.cache

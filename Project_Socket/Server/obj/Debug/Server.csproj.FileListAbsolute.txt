@@ -24,3 +24,16 @@ D:\VS_disk\Socket_C#\Client-Server\Project_Socket\Server\obj\Debug\Server.csproj
 D:\VS_disk\Socket_C#\Client-Server\Project_Socket\Server\obj\Debug\Server.csproj.CopyComplete
 D:\VS_disk\Socket_C#\Client-Server\Project_Socket\Server\obj\Debug\Server.exe
 D:\VS_disk\Socket_C#\Client-Server\Project_Socket\Server\obj\Debug\Server.pdb
+D:\MMT\Client-Server\Project_Socket\Server\bin\Debug\Server.exe.config
+D:\MMT\Client-Server\Project_Socket\Server\bin\Debug\Server.exe
+D:\MMT\Client-Server\Project_Socket\Server\bin\Debug\Server.pdb
+D:\MMT\Client-Server\Project_Socket\Server\bin\Debug\Newtonsoft.Json.dll
+D:\MMT\Client-Server\Project_Socket\Server\bin\Debug\Newtonsoft.Json.xml
+D:\MMT\Client-Server\Project_Socket\Server\obj\Debug\Server.csproj.AssemblyReference.cache
+D:\MMT\Client-Server\Project_Socket\Server\obj\Debug\Server.frmServer.resources
+D:\MMT\Client-Server\Project_Socket\Server\obj\Debug\Server.Properties.Resources.resources
+D:\MMT\Client-Server\Project_Socket\Server\obj\Debug\Server.csproj.GenerateResource.cache
+D:\MMT\Client-Server\Project_Socket\Server\obj\Debug\Server.csproj.CoreCompileInputs.cache
+D:\MMT\Client-Server\Project_Socket\Server\obj\Debug\Server.csproj.CopyComplete
+D:\MMT\Client-Server\Project_Socket\Server\obj\Debug\Server.exe
+D:\MMT\Client-Server\Project_Socket\Server\obj\Debug\Server.pdb

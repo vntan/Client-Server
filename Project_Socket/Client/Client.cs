@@ -146,7 +146,13 @@ namespace Client
                 getusername.Enabled = true;
                 getpassword.Enabled = true;
                 status = "sign";
+
+                //Hai doi tuong: reader: Doc tu client; writer: Viet cho Server
                 stream = new NetworkStream(client);
+                var reader = new StreamReader(stream);
+                var writer = new StreamWriter(stream);
+
+                MessageBox.Show(reader.ReadLine());
             }
             catch
             {
@@ -154,8 +160,7 @@ namespace Client
                 pressToConnect.Enabled = true;
                 return;
             }
-            var recvBuff = new byte[1024];
-            var temp = stream.Read(recvBuff, 0, 1024);
+            
         }
         
         // dong ket noi
@@ -194,14 +199,14 @@ namespace Client
                 else
                     getExchange(data);
 
-            } catch
+            } catch  (Exception e)
             {
                 Close();
                 pressToConnect.Enabled = false;
                 signinbutton.Enabled = false;
                 signupbutton.Enabled = false;
                 searchbutton.Enabled = false;
-                MessageBox.Show("Error on recieving message, please reopen the client!");
+                MessageBox.Show("Error on recieving message, please reopen the client!" + e.ToString());
             }
         }
 
@@ -248,8 +253,6 @@ namespace Client
             if (client != null)
                 Close();
         }
-
-
 
         private void searchbutton_Click(object sender, EventArgs e)
         {
