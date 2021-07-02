@@ -149,7 +149,7 @@ namespace Server
                 var writer = new StreamWriter(stream);
                 writer.AutoFlush = true;
                 //Server sent data to client
-                writer.WriteLine("Code: ");
+                writer.WriteLine("Code ");
 
                 while (isContinue)
                 {
@@ -161,8 +161,15 @@ namespace Server
                         string[] words = code.Split(' ');
                         /* Client code format send
                          * Login Code: 10 Format: 10 <username> <password>
+                         *      Reply: 200: Login Success
+                         *             401: Login Fail
                          * Register Code: 20 Format: 20 <username> <password>
+                         *      Reply: 200: Register Success
+                         *             401: Register Fail
                          * Currency Code: 30 Format: 30 <exchange>
+                         *      Reply: 200 <buy_cash> <buy_transfer> <sell>: Register Success
+                         *             401: Not Login
+                         *             404: Not found exchange
                          */
 
                         switch (words[0])
@@ -188,7 +195,9 @@ namespace Server
                                 {
                                     writeDataClient(words[1], words[2]);
                                     users.Add(words[1], words[2]);
+                                    writer.WriteLine("200");
                                 }
+                                else writer.WriteLine("401");
                                 break;
 
                             case "30":
@@ -198,7 +207,7 @@ namespace Server
                                     {
                                         Exchange find = exChanges.findData(words[1]);
                                         if (find != null) {
-                                            writer.WriteLine(String.Format("{0} {1} {2}", find.buy_cash, find.buy_transfer, find.sell));
+                                            writer.WriteLine(String.Format("200 {0} {1} {2}", find.buy_cash, find.buy_transfer, find.sell));
                                         }
                                         else writer.WriteLine("404");
                                     }
