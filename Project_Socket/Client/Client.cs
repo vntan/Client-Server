@@ -104,27 +104,40 @@ namespace Client
         }
         #endregion
 
+        
         string ipaddress;
         IPEndPoint IP;
         Socket client;
         string status = "connect";
         NetworkStream stream;
+        StreamReader reader;
+        StreamWriter writer;
 
         private void pressToConnect_Click(object sender, EventArgs e)
         {
-            ipaddress = first.Text + '.' + second.Text + '.' + third.Text + '.' + fourth.Text;
+            ipaddress = first.Text;
             Connect();
         }
 
         private void signupbutton_Click(object sender, EventArgs e)
         {
+            if (getusername.Text.Contains(" ") == true || getpassword.Text.Contains(" ") == true)
+            {
+                MessageBox.Show("Username and password cannot contain the space!!!");
+                return;
+            }
             Send("20 " + getusername.Text + " " + getpassword.Text);
             status = "Sign up ";
             Receive();
         }
 
         private void signinbutton_Click(object sender, EventArgs e)
-        {   
+        {
+            if (getusername.Text.Contains(" ") == true || getpassword.Text.Contains(" ") == true)
+            {
+                MessageBox.Show("Username and password cannot contain the space!!!");
+                return;
+            }
             Send("10 " + getusername.Text + " " + getpassword.Text);
             status = "Sign in ";
             Receive();
@@ -139,7 +152,7 @@ namespace Client
             try
             {
                 client.Connect(IP);
-                statusConnect.Text = "Connected at " + first.Text + '.' + second.Text + '.' + third.Text + '.' + fourth.Text + ':' + getport.Text;
+                statusConnect.Text = "Connected at " + first.Text + ':' + getport.Text;
                 pressToConnect.Enabled = false;
                 signinbutton.Enabled = true;
                 signupbutton.Enabled = true;
@@ -147,6 +160,8 @@ namespace Client
                 getpassword.Enabled = true;
                 status = "sign";
                 stream = new NetworkStream(client);
+                reader = new StreamReader(stream);
+                writer = new StreamWriter(stream);
             }
             catch
             {
@@ -154,8 +169,8 @@ namespace Client
                 pressToConnect.Enabled = true;
                 return;
             }
-            var recvBuff = new byte[1024];
-            var temp = stream.Read(recvBuff, 0, 1024);
+            string temp = reader.ReadLine();
+            MessageBox.Show(temp);
         }
         
         // dong ket noi
@@ -169,9 +184,8 @@ namespace Client
         {
             try
             {
-                var receiveBuff = new byte[1024];
-                var count = stream.Read(receiveBuff, 0, 1024);
-                string data = Encoding.ASCII.GetString(receiveBuff);
+                string data = reader.ReadLine();
+                MessageBox.Show(data);
                 if (data == "200")
                 {
                     if (status == "Sign in ")
@@ -208,8 +222,7 @@ namespace Client
         // gui thong diep
         void Send(string obj)
         {
-            var sendBuff = Encoding.ASCII.GetBytes(obj);
-            stream.Write(sendBuff, 0, sendBuff.Length);
+            writer.WriteLine(obj);
         }
 
         void getExchange(string data)
