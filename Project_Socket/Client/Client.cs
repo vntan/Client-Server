@@ -23,6 +23,11 @@ namespace Client
         }
 
         #region No need to care about
+
+        private void searchResult_Click(object sender, EventArgs e)
+        {
+
+        }
         private void Client_Load(object sender, EventArgs e)
         {
 
@@ -102,6 +107,8 @@ namespace Client
         string ipaddress;
         IPEndPoint IP;
         Socket client;
+        string status = "connect";
+        NetworkStream stream;
 
         private void pressToConnect_Click(object sender, EventArgs e)
         {
@@ -111,16 +118,16 @@ namespace Client
 
         private void signupbutton_Click(object sender, EventArgs e)
         {
-            Send("signup");
-            Send(getusername);
-            Send(getpassword);
+            Send("20 " + getusername.Text + " " + getpassword.Text);
+            status = "Sign up ";
+            Receive();
         }
 
         private void signinbutton_Click(object sender, EventArgs e)
-        {
-            Send("signin");
-            Send(getusername);
-            Send(getpassword);
+        {   
+            Send("10 " + getusername.Text + " " + getpassword.Text);
+            status = "Sign in ";
+            Receive();
         }
 
         // ket noi den server
@@ -138,7 +145,8 @@ namespace Client
                 signupbutton.Enabled = true;
                 getusername.Enabled = true;
                 getpassword.Enabled = true;
-
+                status = "sign";
+                stream = new NetworkStream(client);
             }
             catch
             {
@@ -146,9 +154,8 @@ namespace Client
                 pressToConnect.Enabled = true;
                 return;
             }
-            Thread listen = new Thread(Receive);
-            listen.IsBackground = true;
-            listen.Start();
+            var recvBuff = new byte[1024];
+            var temp = stream.Read(recvBuff, 0, 1024);
         }
         
         // dong ket noi
@@ -162,33 +169,31 @@ namespace Client
         {
             try
             {
-                while (true)
+                var receiveBuff = new byte[1024];
+                var count = stream.Read(receiveBuff, 0, 1024);
+                string data = Encoding.ASCII.GetString(receiveBuff);
+                if (data == "200")
                 {
-                    byte[] data = new byte[1024 * 10];
-                    client.Receive(data);
-
-                    string message = (string)Deserialize(data);
-                    if (message == "signin" || message == "signup")
+                    if (status == "Sign in ")
                     {
-                        byte[] temp = new byte[1024 * 10];
-                        client.Receive(temp);
-                        string getmess = (string)Deserialize(temp);
-                        if (getmess == "Signed in complete!")
-                        {
-                            signStatus.Text = "You are connected as " + getusername;
-                            signinbutton.Enabled = false;
-                            signupbutton.Enabled = false;
-                            searchbutton.Enabled = true;
-                            getusername.Enabled = false;
-                            getpassword.Enabled = false;
-                            listRegion.Enabled = true;
-                        }
-                        else
-                            signStatus.Text = getmess;
+                        signStatus.Text = "You are connected as " + getusername;
+                        signinbutton.Enabled = false;
+                        signupbutton.Enabled = false;
+                        searchbutton.Enabled = true;
+                        getusername.Enabled = false;
+                        getpassword.Enabled = false;
+                        listRegion.Enabled = true;
                     }
                     else
-                        searchResult.Text = message;
+                        signStatus.Text = status + "completed";
                 }
+                else if (data == "401")
+                    signStatus.Text = status + "failed";
+                else if (data == "404")
+                    searchResult.Text = "No found exchange";
+                else
+                    getExchange(data);
+
             } catch
             {
                 Close();
@@ -201,9 +206,20 @@ namespace Client
         }
 
         // gui thong diep
-        void Send(object obj)
+        void Send(string obj)
         {
-            client.Send(Serialize(obj));
+            var sendBuff = Encoding.ASCII.GetBytes(obj);
+            stream.Write(sendBuff, 0, sendBuff.Length);
+        }
+
+        void getExchange(string data)
+        {
+            string[] words = data.Split(' ');
+            searchResult.Text = "Success";
+            money_type.Text = listRegion.SelectedItem.ToString();
+            buy_cash.Text = words[1];
+            buy_transfer.Text = words[2];
+            sell.Text = words[3];
         }
 
         // tach manh ra
@@ -228,8 +244,9 @@ namespace Client
 
         // dong ket noi khi dong form
         private void Client_FormClosing(object sender, FormClosingEventArgs e)
-        {
-            Close();
+        {   
+            if (client != null)
+                Close();
         }
 
 
@@ -238,16 +255,13 @@ namespace Client
         {
             if (listRegion.SelectedItem.ToString() != string.Empty)
             {
-                Send(listRegion.SelectedItem.ToString());
+                Send("30 " + listRegion.SelectedItem.ToString());
             }
             else
                 searchResult.Text = "Please choose something!";
         }
 
-        private void searchResult_Click(object sender, EventArgs e)
-        {
-
-        }
+       
 
 
     }
