@@ -44,7 +44,8 @@ namespace Server
                         string[] data = line.Split(' ');
                         if (data.Length == 2 && !string.IsNullOrEmpty(data[0]) && !string.IsNullOrEmpty(data[1]))
                         {
-                            users.Add(data[0], data[1]);
+                            if (users.ContainsKey(data[0])) users[data[0]] = data[1];
+                            else users.Add(data[0], data[1]);
                         }
                     }
                 }
@@ -53,7 +54,7 @@ namespace Server
 
         void writeDataClient(string username, string password)
         {
-            File.AppendAllText(AppDomain.CurrentDomain.BaseDirectory + "dataUser.txt", username + " " + password + Environment.NewLine);
+            File.AppendAllText(AppDomain.CurrentDomain.BaseDirectory + "dataUser.txt", Environment.NewLine + username + " " + password);
         }
         #endregion
 
@@ -169,18 +170,13 @@ namespace Server
                          *      Format: 20 <username> <password>
                          *      Reply: 200: Register Success
                          *             401: Register Fail
-                         *Get Name Bank Code: 30 
+                         * Get All Currency Code: 30 
                          *      Format: 30
-                         *      Reply: 200 <BankName> 
+                         *      Reply: 200_<Bank Name>_<Currency1>_<Currency2>_..._<CurrencyN>
                          *             401 Not Login
                          *             404 Not Found
-                         * Get All Currency Code: 40 
-                         *      Format: 40
-                         *      Reply: 200 <Currency1> <Currency2> .. <CurrencyN>
-                         *             401 Not Login
-                         *             404 Not Found
-                         * Currency Code: 50 
-                         *      Format: 50 <Currency>
+                         * Currency Code: 40 
+                         *      Format: 40 <Currency>
                          *      Reply: 200 <buy_cash> <buy_transfer> <sell>: Register Success
                          *             401: Not Login
                          *             404: Not found Currency.
@@ -207,40 +203,34 @@ namespace Server
                                 //Register
                                 if (words.Length == 3)
                                 {
-                                    writeDataClient(words[1], words[2]);
-                                    users.Add(words[1], words[2]);
-                                    writer.WriteLine("200");
+                                    if (words[1].All(c => Char.IsLetterOrDigit(c)) && words[2].All(c => Char.IsLetterOrDigit(c)) && !users.ContainsKey(words[1]))
+                                    {
+                                        writeDataClient(words[1], words[2]);
+                                        users.Add(words[1], words[2]);
+                                        writer.WriteLine("200");
+                                    }
+                                    else writer.WriteLine("401");
                                 }
                                 else writer.WriteLine("401");
                                 break;
 
                             case "30":
                                 if (clientLogin[client.RemoteEndPoint.ToString()])
-                                {
-                                    if (cbBank.SelectedIndex >= 0)
-                                        writer.WriteLine("200 " + cbBank.SelectedValue.ToString());
-                                    
-                                    else writer.WriteLine("404");
-                                }
-                                else writer.WriteLine("401");
-                                break;
-
-                            case "40":
-                                if (clientLogin[client.RemoteEndPoint.ToString()])
                                 { 
-                                    if (exChanges.Results.Count > 0)
+
+                                    if (exChanges.Results.Count > 0 && cbBank.SelectedIndex >= 0)
                                     {
                                         string temp = String.Empty;
-                                        foreach(Exchange e in exChanges.Results) temp += e.currency + " ";
-                                        temp.Remove(temp.Length - 1, 1);
-                                        writer.WriteLine("200 " + temp);
+                                        foreach(Exchange e in exChanges.Results) temp += e.currency + "_";
+                                        temp = temp.Remove(temp.Length - 1, 1);
+                                        writer.WriteLine("200_" + cbBank.SelectedValue.ToString() + "_" + temp);
                                     }
                                     else writer.WriteLine("404");
                                 }
                                 else writer.WriteLine("401");
                                 break;
 
-                            case "50":
+                            case "40":
                                 if (clientLogin[client.RemoteEndPoint.ToString()])
                                 {
                                     if (words.Length == 2)
