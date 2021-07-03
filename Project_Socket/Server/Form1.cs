@@ -112,7 +112,7 @@ namespace Server
                     }
                     //MessageBox.Show(temp);
 
-                    exChanges = JsonConvert.DeserializeObject<ListExchange>(temp);
+                    exChanges = JsonConvert.DeserializeObject<ListExchange>(temp, new JsonSerializerSettings { FloatParseHandling = FloatParseHandling.Double });
 
                     lblStatus.Text = cbBank.SelectedValue.ToString() + " Last update: " + DateTime.Now.ToString("dd/MM/yyyy HH:mm");
                     return true;
