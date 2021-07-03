@@ -52,6 +52,8 @@ namespace Client
             this.sell = new System.Windows.Forms.Label();
             this.money_type = new System.Windows.Forms.Label();
             this.label10 = new System.Windows.Forms.Label();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // label3
@@ -179,18 +181,18 @@ namespace Client
             this.listRegion.Items.AddRange(new object[] {
             "VND",
             "USD"});
-            this.listRegion.Location = new System.Drawing.Point(15, 310);
+            this.listRegion.Location = new System.Drawing.Point(4, 16);
             this.listRegion.Name = "listRegion";
-            this.listRegion.Size = new System.Drawing.Size(132, 24);
+            this.listRegion.Size = new System.Drawing.Size(169, 24);
             this.listRegion.TabIndex = 17;
             this.listRegion.SelectedIndexChanged += new System.EventHandler(this.listRegion_SelectedIndexChanged);
             // 
             // searchbutton
             // 
             this.searchbutton.Enabled = false;
-            this.searchbutton.Location = new System.Drawing.Point(174, 304);
+            this.searchbutton.Location = new System.Drawing.Point(178, 10);
             this.searchbutton.Name = "searchbutton";
-            this.searchbutton.Size = new System.Drawing.Size(101, 34);
+            this.searchbutton.Size = new System.Drawing.Size(85, 34);
             this.searchbutton.TabIndex = 18;
             this.searchbutton.Text = "Search";
             this.searchbutton.UseVisualStyleBackColor = true;
@@ -199,9 +201,9 @@ namespace Client
             // searchResult
             // 
             this.searchResult.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.searchResult.Location = new System.Drawing.Point(12, 349);
+            this.searchResult.Location = new System.Drawing.Point(4, 55);
             this.searchResult.Name = "searchResult";
-            this.searchResult.Size = new System.Drawing.Size(278, 20);
+            this.searchResult.Size = new System.Drawing.Size(259, 20);
             this.searchResult.TabIndex = 19;
             this.searchResult.Text = "Search something";
             this.searchResult.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -222,7 +224,7 @@ namespace Client
             // 
             this.label6.AutoSize = true;
             this.label6.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label6.Location = new System.Drawing.Point(11, 469);
+            this.label6.Location = new System.Drawing.Point(3, 175);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(43, 20);
             this.label6.TabIndex = 21;
@@ -232,7 +234,7 @@ namespace Client
             // 
             this.label7.AutoSize = true;
             this.label7.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label7.Location = new System.Drawing.Point(11, 439);
+            this.label7.Location = new System.Drawing.Point(3, 145);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(99, 20);
             this.label7.TabIndex = 22;
@@ -242,7 +244,7 @@ namespace Client
             // 
             this.label8.AutoSize = true;
             this.label8.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label8.Location = new System.Drawing.Point(11, 409);
+            this.label8.Location = new System.Drawing.Point(3, 115);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(82, 20);
             this.label8.TabIndex = 23;
@@ -251,7 +253,7 @@ namespace Client
             // buy_cash
             // 
             this.buy_cash.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.buy_cash.Location = new System.Drawing.Point(160, 409);
+            this.buy_cash.Location = new System.Drawing.Point(148, 115);
             this.buy_cash.Name = "buy_cash";
             this.buy_cash.Size = new System.Drawing.Size(114, 20);
             this.buy_cash.TabIndex = 24;
@@ -261,7 +263,7 @@ namespace Client
             // buy_transfer
             // 
             this.buy_transfer.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.buy_transfer.Location = new System.Drawing.Point(160, 439);
+            this.buy_transfer.Location = new System.Drawing.Point(148, 145);
             this.buy_transfer.Name = "buy_transfer";
             this.buy_transfer.Size = new System.Drawing.Size(114, 20);
             this.buy_transfer.TabIndex = 25;
@@ -271,7 +273,7 @@ namespace Client
             // sell
             // 
             this.sell.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.sell.Location = new System.Drawing.Point(160, 469);
+            this.sell.Location = new System.Drawing.Point(148, 175);
             this.sell.Name = "sell";
             this.sell.Size = new System.Drawing.Size(114, 20);
             this.sell.TabIndex = 26;
@@ -281,7 +283,7 @@ namespace Client
             // money_type
             // 
             this.money_type.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.money_type.Location = new System.Drawing.Point(160, 379);
+            this.money_type.Location = new System.Drawing.Point(148, 85);
             this.money_type.Name = "money_type";
             this.money_type.Size = new System.Drawing.Size(114, 20);
             this.money_type.TabIndex = 28;
@@ -292,29 +294,37 @@ namespace Client
             // 
             this.label10.AutoSize = true;
             this.label10.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label10.Location = new System.Drawing.Point(11, 379);
+            this.label10.Location = new System.Drawing.Point(3, 85);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(51, 20);
             this.label10.TabIndex = 27;
             this.label10.Text = "Type: ";
             // 
+            // panel1
+            // 
+            this.panel1.Controls.Add(this.listRegion);
+            this.panel1.Controls.Add(this.money_type);
+            this.panel1.Controls.Add(this.searchbutton);
+            this.panel1.Controls.Add(this.label10);
+            this.panel1.Controls.Add(this.searchResult);
+            this.panel1.Controls.Add(this.sell);
+            this.panel1.Controls.Add(this.label6);
+            this.panel1.Controls.Add(this.buy_transfer);
+            this.panel1.Controls.Add(this.label7);
+            this.panel1.Controls.Add(this.buy_cash);
+            this.panel1.Controls.Add(this.label8);
+            this.panel1.Location = new System.Drawing.Point(16, 256);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(274, 223);
+            this.panel1.TabIndex = 29;
+            // 
             // Client
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(302, 501);
-            this.Controls.Add(this.money_type);
-            this.Controls.Add(this.label10);
-            this.Controls.Add(this.sell);
-            this.Controls.Add(this.buy_transfer);
-            this.Controls.Add(this.buy_cash);
-            this.Controls.Add(this.label8);
-            this.Controls.Add(this.label7);
-            this.Controls.Add(this.label6);
+            this.ClientSize = new System.Drawing.Size(302, 489);
+            this.Controls.Add(this.panel1);
             this.Controls.Add(this.signStatus);
-            this.Controls.Add(this.searchResult);
-            this.Controls.Add(this.searchbutton);
-            this.Controls.Add(this.listRegion);
             this.Controls.Add(this.signinbutton);
             this.Controls.Add(this.signupbutton);
             this.Controls.Add(this.label5);
@@ -331,6 +341,8 @@ namespace Client
             this.Text = "Client";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Client_FormClosing);
             this.Load += new System.EventHandler(this.Client_Load);
+            this.panel1.ResumeLayout(false);
+            this.panel1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -360,6 +372,7 @@ namespace Client
         private System.Windows.Forms.Label sell;
         private System.Windows.Forms.Label money_type;
         private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.Panel panel1;
     }
 }
 

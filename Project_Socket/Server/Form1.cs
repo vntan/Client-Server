@@ -149,7 +149,7 @@ namespace Server
                 var writer = new StreamWriter(stream);
                 writer.AutoFlush = true;
                 //Server sent data to client
-                writer.WriteLine("Code");
+                writer.WriteLine("202");
 
                 while (isContinue)
                 {
@@ -160,16 +160,24 @@ namespace Server
                     {
                         string[] words = code.Split(' ');
                         /* Client code format send
-                         * Login Code: 10 Format: 10 <username> <password>
+                         * Login Code: 10 
+                         *      Format: 10 <username> <password>
                          *      Reply: 200: Login Success
                          *             401: Login Fail
-                         * Register Code: 20 Format: 20 <username> <password>
+                         * Register Code: 20 
+                         *      Format: 20 <username> <password>
                          *      Reply: 200: Register Success
                          *             401: Register Fail
-                         * Currency Code: 30 Format: 30 <exchange>
+                         * Get All Currency Code: 30 
+                         *      Format: 30
+                         *      Reply: 200 <Currency1> <Currency2> .. <CurrencyN>
+                         *             401 Not Login
+                         *             404 Not Found
+                         * Currency Code: 40 
+                         *      Format: 40 <Currency>
                          *      Reply: 200 <buy_cash> <buy_transfer> <sell>: Register Success
                          *             401: Not Login
-                         *             404: Not found exchange
+                         *             404: Not found Currency.
                          */
 
                         switch (words[0])
@@ -202,6 +210,21 @@ namespace Server
 
                             case "30":
                                 if (clientLogin[client.RemoteEndPoint.ToString()])
+                                { 
+                                    if (exChanges.Results.Count > 0)
+                                    {
+                                        string temp = String.Empty;
+                                        foreach(Exchange e in exChanges.Results) temp += e.currency + " ";
+                                        temp.Remove(temp.Length - 1, 1);
+                                        writer.WriteLine("200 " + temp);
+                                    }
+                                    else writer.WriteLine("404");
+                                }
+                                else writer.WriteLine("401");
+                                break;
+
+                            case "40":
+                                if (clientLogin[client.RemoteEndPoint.ToString()])
                                 {
                                     if (words.Length == 2)
                                     {
@@ -215,6 +238,7 @@ namespace Server
                                 }
                                 else writer.WriteLine("401");
                                 break;
+
                             default:
                                 writer.WriteLine("404");
                                 break;
@@ -244,8 +268,8 @@ namespace Server
         {
             //Create new server 
             Socket server = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-            server.ReceiveTimeout = 60000;
-            server.SendTimeout = 60000;
+            //server.ReceiveTimeout = 60000;
+            //server.SendTimeout = 60000;
 
             // Start listening.
             try

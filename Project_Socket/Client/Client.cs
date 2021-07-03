@@ -147,10 +147,11 @@ namespace Client
         void Connect()
         {
             // IP: dia chi cua server
-            IP = new IPEndPoint(IPAddress.Parse(ipaddress), Convert.ToInt32(getport.Text));
-            client = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
             try
             {
+                IP = new IPEndPoint(IPAddress.Parse(ipaddress), Convert.ToInt32(getport.Text));
+                client = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+            
                 client.Connect(IP);
                 statusConnect.Text = "Connected at " + first.Text + ':' + getport.Text;
                 pressToConnect.Enabled = false;
@@ -164,7 +165,10 @@ namespace Client
                 stream = new NetworkStream(client);
                 reader = new StreamReader(stream);
                 writer = new StreamWriter(stream);
+                writer.AutoFlush = true;
 
+                string connectStatus = reader.ReadLine();
+                if (connectStatus != "202") throw new Exception("Connect Failed!");
             }
             catch
             {
@@ -172,8 +176,6 @@ namespace Client
                 pressToConnect.Enabled = true;
                 return;
             }
-            string temp = reader.ReadLine();
-            MessageBox.Show(temp);
         }
         
         // dong ket noi
@@ -187,7 +189,10 @@ namespace Client
         {
             try
             {
+
+                if (client.Poll(1, SelectMode.SelectRead) && client.Available == 0) throw new Exception("ERROR");
                 string data = reader.ReadLine();
+
                 MessageBox.Show(data);
                 if (data == "200")
                 {
@@ -225,7 +230,8 @@ namespace Client
         // gui thong diep
         void Send(string obj)
         {
-            writer.WriteLine(obj);
+           
+            if (!(client.Poll(1, SelectMode.SelectRead) && client.Available == 0)) writer.WriteLine(obj);
         }
 
         void getExchange(string data)
