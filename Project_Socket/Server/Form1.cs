@@ -285,6 +285,10 @@ namespace Server
                 int port = Int32.Parse(txtPort.Text);
                 server.Bind(new IPEndPoint(IPAddress.Parse(txtIP.Text), port));
                 server.Listen(20);
+                btnStart.Enabled = false;
+                txtPort.ReadOnly = true;
+                cbBank.Enabled = false;
+                tmUpdate.Start();
             }
             catch (Exception)
             {
@@ -371,10 +375,6 @@ namespace Server
             {
                 if (getData())
                 {
-                    btnStart.Enabled = false;
-                    txtPort.ReadOnly = true;
-                    cbBank.Enabled = false;
-                    tmUpdate.Start();
 
                     Thread thread = new Thread(() =>
                     {
