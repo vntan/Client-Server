@@ -30,6 +30,7 @@ namespace Server
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmServer));
             this.btnStart = new System.Windows.Forms.Button();
             this.tmUpdate = new System.Windows.Forms.Timer(this.components);
             this.lblStatus = new System.Windows.Forms.Label();
@@ -176,6 +177,7 @@ namespace Server
             this.lstClient.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.cIP,
             this.cName});
+            this.lstClient.GridLines = true;
             this.lstClient.HideSelection = false;
             this.lstClient.Location = new System.Drawing.Point(232, 33);
             this.lstClient.Name = "lstClient";
@@ -215,6 +217,7 @@ namespace Server
             this.Controls.Add(this.lstClient);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.lblStatus);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "frmServer";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Server";
