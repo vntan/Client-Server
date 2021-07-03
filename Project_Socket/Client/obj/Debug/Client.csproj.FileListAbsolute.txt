@@ -28,3 +28,13 @@ D:\MMT\Client-Server\Project_Socket\Client\obj\Debug\Client.csproj.CoreCompileIn
 D:\MMT\Client-Server\Project_Socket\Client\obj\Debug\Client.exe
 D:\MMT\Client-Server\Project_Socket\Client\obj\Debug\Client.pdb
 D:\MMT\Client-Server\Project_Socket\Client\obj\Debug\Client.csproj.AssemblyReference.cache
+D:\VS_disk\Socket_C#\Client-Server\Client-Server\Project_Socket\Client\bin\Debug\Client.exe.config
+D:\VS_disk\Socket_C#\Client-Server\Client-Server\Project_Socket\Client\bin\Debug\Client.exe
+D:\VS_disk\Socket_C#\Client-Server\Client-Server\Project_Socket\Client\bin\Debug\Client.pdb
+D:\VS_disk\Socket_C#\Client-Server\Client-Server\Project_Socket\Client\obj\Debug\Client.csproj.AssemblyReference.cache
+D:\VS_disk\Socket_C#\Client-Server\Client-Server\Project_Socket\Client\obj\Debug\Client.Client.resources
+D:\VS_disk\Socket_C#\Client-Server\Client-Server\Project_Socket\Client\obj\Debug\Client.Properties.Resources.resources
+D:\VS_disk\Socket_C#\Client-Server\Client-Server\Project_Socket\Client\obj\Debug\Client.csproj.GenerateResource.cache
+D:\VS_disk\Socket_C#\Client-Server\Client-Server\Project_Socket\Client\obj\Debug\Client.csproj.CoreCompileInputs.cache
+D:\VS_disk\Socket_C#\Client-Server\Client-Server\Project_Socket\Client\obj\Debug\Client.exe
+D:\VS_disk\Socket_C#\Client-Server\Client-Server\Project_Socket\Client\obj\Debug\Client.pdb

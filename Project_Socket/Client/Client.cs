@@ -177,7 +177,36 @@ namespace Client
                 return;
             }
         }
-        
+
+        void getBankName_Money()
+        {   try
+            {
+                Send("30");
+                if (client.Poll(1, SelectMode.SelectRead) && client.Available == 0) throw new Exception("ERROR");
+                string data = reader.ReadLine();
+
+                string[] words = data.Split('_');
+
+                if (words[0] == "200")
+                {
+                    nameofbank.Text = words[1];
+                    for (int i = 2; i < words.Length; i++)
+                    {
+                        listRegion.Items.Add(words[i]);
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Close();
+                pressToConnect.Enabled = false;
+                signinbutton.Enabled = false;
+                signupbutton.Enabled = false;
+                searchbutton.Enabled = false;
+                MessageBox.Show("Error on getting bank name, please reopen the client!" + e.ToString());
+            }
+        }
+
         // dong ket noi
         void Close()
         {
@@ -193,18 +222,18 @@ namespace Client
                 if (client.Poll(1, SelectMode.SelectRead) && client.Available == 0) throw new Exception("ERROR");
                 string data = reader.ReadLine();
 
-                MessageBox.Show(data);
                 if (data == "200")
-                {
+                {   
                     if (status == "Sign in ")
                     {
-                        signStatus.Text = "You are connected as " + getusername;
+                        signStatus.Text = "You are connected as " + getusername.Text;
                         signinbutton.Enabled = false;
                         signupbutton.Enabled = false;
                         searchbutton.Enabled = true;
                         getusername.Enabled = false;
                         getpassword.Enabled = false;
                         listRegion.Enabled = true;
+                        getBankName_Money();
                     }
                     else
                         signStatus.Text = status + "completed";
@@ -244,26 +273,6 @@ namespace Client
             sell.Text = words[3];
         }
 
-        // tach manh ra
-        byte[] Serialize(object obj)
-        {
-            MemoryStream stream = new MemoryStream();
-            BinaryFormatter formatter = new BinaryFormatter();
-
-            formatter.Serialize(stream, obj);
-
-            return stream.ToArray();
-        }
-
-        // gom manh lai
-        object Deserialize(byte[] data)
-        {
-            MemoryStream stream = new MemoryStream(data);
-            BinaryFormatter formatter = new BinaryFormatter();
-
-            return formatter.Deserialize(stream);
-        }
-
         // dong ket noi khi dong form
         private void Client_FormClosing(object sender, FormClosingEventArgs e)
         {   
@@ -273,9 +282,10 @@ namespace Client
 
         private void searchbutton_Click(object sender, EventArgs e)
         {
-            if (listRegion.SelectedItem.ToString() != string.Empty)
+            if (listRegion.SelectedItem != null)
             {
-                Send("30 " + listRegion.SelectedItem.ToString());
+                Send("40 " + listRegion.SelectedItem.ToString());
+                Receive();
             }
             else
                 searchResult.Text = "Please choose something!";

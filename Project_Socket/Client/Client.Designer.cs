@@ -53,6 +53,8 @@ namespace Client
             this.money_type = new System.Windows.Forms.Label();
             this.label10 = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.nameofbank = new System.Windows.Forms.Label();
+            this.bankName = new System.Windows.Forms.Label();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -178,9 +180,6 @@ namespace Client
             this.listRegion.Enabled = false;
             this.listRegion.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.listRegion.FormattingEnabled = true;
-            this.listRegion.Items.AddRange(new object[] {
-            "VND",
-            "USD"});
             this.listRegion.Location = new System.Drawing.Point(4, 16);
             this.listRegion.Name = "listRegion";
             this.listRegion.Size = new System.Drawing.Size(169, 24);
@@ -224,7 +223,7 @@ namespace Client
             // 
             this.label6.AutoSize = true;
             this.label6.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label6.Location = new System.Drawing.Point(3, 175);
+            this.label6.Location = new System.Drawing.Point(4, 204);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(43, 20);
             this.label6.TabIndex = 21;
@@ -234,7 +233,7 @@ namespace Client
             // 
             this.label7.AutoSize = true;
             this.label7.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label7.Location = new System.Drawing.Point(3, 145);
+            this.label7.Location = new System.Drawing.Point(4, 174);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(99, 20);
             this.label7.TabIndex = 22;
@@ -244,7 +243,7 @@ namespace Client
             // 
             this.label8.AutoSize = true;
             this.label8.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label8.Location = new System.Drawing.Point(3, 115);
+            this.label8.Location = new System.Drawing.Point(4, 144);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(82, 20);
             this.label8.TabIndex = 23;
@@ -253,7 +252,7 @@ namespace Client
             // buy_cash
             // 
             this.buy_cash.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.buy_cash.Location = new System.Drawing.Point(148, 115);
+            this.buy_cash.Location = new System.Drawing.Point(149, 144);
             this.buy_cash.Name = "buy_cash";
             this.buy_cash.Size = new System.Drawing.Size(114, 20);
             this.buy_cash.TabIndex = 24;
@@ -263,7 +262,7 @@ namespace Client
             // buy_transfer
             // 
             this.buy_transfer.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.buy_transfer.Location = new System.Drawing.Point(148, 145);
+            this.buy_transfer.Location = new System.Drawing.Point(149, 174);
             this.buy_transfer.Name = "buy_transfer";
             this.buy_transfer.Size = new System.Drawing.Size(114, 20);
             this.buy_transfer.TabIndex = 25;
@@ -273,7 +272,7 @@ namespace Client
             // sell
             // 
             this.sell.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.sell.Location = new System.Drawing.Point(148, 175);
+            this.sell.Location = new System.Drawing.Point(149, 204);
             this.sell.Name = "sell";
             this.sell.Size = new System.Drawing.Size(114, 20);
             this.sell.TabIndex = 26;
@@ -283,7 +282,7 @@ namespace Client
             // money_type
             // 
             this.money_type.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.money_type.Location = new System.Drawing.Point(148, 85);
+            this.money_type.Location = new System.Drawing.Point(149, 114);
             this.money_type.Name = "money_type";
             this.money_type.Size = new System.Drawing.Size(114, 20);
             this.money_type.TabIndex = 28;
@@ -294,7 +293,7 @@ namespace Client
             // 
             this.label10.AutoSize = true;
             this.label10.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label10.Location = new System.Drawing.Point(3, 85);
+            this.label10.Location = new System.Drawing.Point(4, 114);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(51, 20);
             this.label10.TabIndex = 27;
@@ -302,6 +301,8 @@ namespace Client
             // 
             // panel1
             // 
+            this.panel1.Controls.Add(this.nameofbank);
+            this.panel1.Controls.Add(this.bankName);
             this.panel1.Controls.Add(this.listRegion);
             this.panel1.Controls.Add(this.money_type);
             this.panel1.Controls.Add(this.searchbutton);
@@ -313,16 +314,36 @@ namespace Client
             this.panel1.Controls.Add(this.label7);
             this.panel1.Controls.Add(this.buy_cash);
             this.panel1.Controls.Add(this.label8);
-            this.panel1.Location = new System.Drawing.Point(16, 256);
+            this.panel1.Location = new System.Drawing.Point(16, 285);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(274, 223);
+            this.panel1.Size = new System.Drawing.Size(274, 236);
             this.panel1.TabIndex = 29;
+            // 
+            // nameofbank
+            // 
+            this.nameofbank.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.nameofbank.Location = new System.Drawing.Point(149, 88);
+            this.nameofbank.Name = "nameofbank";
+            this.nameofbank.Size = new System.Drawing.Size(114, 20);
+            this.nameofbank.TabIndex = 30;
+            this.nameofbank.Text = "###";
+            this.nameofbank.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // bankName
+            // 
+            this.bankName.AutoSize = true;
+            this.bankName.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.bankName.Location = new System.Drawing.Point(4, 88);
+            this.bankName.Name = "bankName";
+            this.bankName.Size = new System.Drawing.Size(50, 20);
+            this.bankName.TabIndex = 29;
+            this.bankName.Text = "Bank:";
             // 
             // Client
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(302, 489);
+            this.ClientSize = new System.Drawing.Size(302, 533);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.signStatus);
             this.Controls.Add(this.signinbutton);
@@ -373,6 +394,8 @@ namespace Client
         private System.Windows.Forms.Label money_type;
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Label nameofbank;
+        private System.Windows.Forms.Label bankName;
     }
 }
 
