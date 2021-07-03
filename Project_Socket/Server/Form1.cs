@@ -22,12 +22,11 @@ namespace Server
         public frmServer()
         {
             InitializeComponent();
-            lblStatus.Text = "Last update: -";
+            lblStatus.Text = "No update found";
             cbBank.DataSource = Constant.Instance.listBank.Keys.ToList();
             cbBank.SelectedIndex = 0;
             clientLogin = new Dictionary<string, bool>();
             users = new Dictionary<string, string>();
-            readDataClient();
             Control.CheckForIllegalCrossThreadCalls = false;
         }
 
@@ -54,7 +53,13 @@ namespace Server
 
         void writeDataClient(string username, string password)
         {
-            File.AppendAllText(AppDomain.CurrentDomain.BaseDirectory + "dataUser.txt", Environment.NewLine + username + " " + password);
+            if (users.Count > 0)
+              File.AppendAllText(AppDomain.CurrentDomain.BaseDirectory + "dataUser.txt", Environment.NewLine + username + " " + password);
+            else
+            {
+                File.AppendAllText(AppDomain.CurrentDomain.BaseDirectory + "dataUser.txt", username + " " + password);
+            }
+                
         }
         #endregion
 
@@ -160,14 +165,14 @@ namespace Server
                     //MessageBox.Show(code);
                     if (!string.IsNullOrEmpty(code))
                     {
-                        string[] words = code.Split(' ');
+                        string[] words = code.Split('_');
                         /* Client code format send
                          * Login Code: 10 
-                         *      Format: 10 <username> <password>
+                         *      Format: 10_<username>_<password>
                          *      Reply: 200: Login Success
                          *             401: Login Fail
                          * Register Code: 20 
-                         *      Format: 20 <username> <password>
+                         *      Format: 20_<username>_<password>
                          *      Reply: 200: Register Success
                          *             401: Register Fail
                          * Get All Currency Code: 30 
@@ -176,8 +181,8 @@ namespace Server
                          *             401 Not Login
                          *             404 Not Found
                          * Currency Code: 40 
-                         *      Format: 40 <Currency>
-                         *      Reply: 200 <buy_cash> <buy_transfer> <sell>: Register Success
+                         *      Format: 40_<Currency>
+                         *      Reply: 200_<buy_cash>_<buy_transfer>_<sell>: Register Success
                          *             401: Not Login
                          *             404: Not found Currency.
                          */
@@ -188,6 +193,7 @@ namespace Server
                                 //Login
                                 if (words.Length == 3)
                                 {
+                                    readDataClient();
                                     if (checkLogin(words[1], words[2]))
                                     {
                                         lstClient.FindItemWithText(client.RemoteEndPoint.ToString()).SubItems[1].Text = words[1];
@@ -200,11 +206,14 @@ namespace Server
 
                                 break;
                             case "20":
+
                                 //Register
                                 if (words.Length == 3)
                                 {
-                                    if (words[1].All(c => Char.IsLetterOrDigit(c)) && words[2].All(c => Char.IsLetterOrDigit(c)) && !users.ContainsKey(words[1]))
+                                    readDataClient();
+                                    if (!string.IsNullOrEmpty(words[1]) && !string.IsNullOrEmpty(words[2]) && words[1].All(c => Char.IsLetterOrDigit(c)) && words[2].All(c => Char.IsLetterOrDigit(c)) && !users.ContainsKey(words[1]))
                                     {
+ 
                                         writeDataClient(words[1], words[2]);
                                         users.Add(words[1], words[2]);
                                         writer.WriteLine("200");
@@ -237,7 +246,7 @@ namespace Server
                                     {
                                         Exchange find = exChanges.findData(words[1]);
                                         if (find != null) {
-                                            writer.WriteLine(String.Format("200 {0} {1} {2}", find.buy_cash, find.buy_transfer, find.sell));
+                                            writer.WriteLine(String.Format("200_{0}_{1}_{2}", find.buy_cash, find.buy_transfer, find.sell));
                                         }
                                         else writer.WriteLine("404");
                                     }
@@ -285,6 +294,7 @@ namespace Server
                 int port = Int32.Parse(txtPort.Text);
                 server.Bind(new IPEndPoint(IPAddress.Parse(txtIP.Text), port));
                 server.Listen(20);
+                btnStart.Text = "Started";
                 btnStart.Enabled = false;
                 txtPort.ReadOnly = true;
                 cbBank.Enabled = false;
@@ -300,6 +310,7 @@ namespace Server
             {
                 // Accept all client connected
                 Socket client = server.Accept();
+                
                 Thread processClient = new Thread(() =>
                 {
                     try
@@ -391,7 +402,7 @@ namespace Server
 
                     thread.IsBackground = true;
                     thread.Start();
-                    btnStart.Text = "Started";
+                    
                 }
                 else MessageBox.Show("Unable to get data.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
 

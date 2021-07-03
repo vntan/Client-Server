@@ -1,12 +1,1 @@
-oke 123
-tan 1
-<<<<<<< HEAD
-ta 2
-
-admin admin
-=======
-yh 2
->>>>>>> e746e11b401bf664211beb83516e7bec78a396ce
-
-20127447 123456789
-vonhattan tan
+hi 1
