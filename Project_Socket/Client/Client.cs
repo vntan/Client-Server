@@ -104,7 +104,8 @@ namespace Client
         }
         #endregion
 
-        
+        #region Socket
+
         string ipaddress;
         IPEndPoint IP;
         Socket client;
@@ -112,36 +113,6 @@ namespace Client
         NetworkStream stream;
         StreamReader reader;
         StreamWriter writer;
-
-        private void pressToConnect_Click(object sender, EventArgs e)
-        {
-            ipaddress = first.Text;
-            Connect();
-        }
-
-        private void signupbutton_Click(object sender, EventArgs e)
-        {
-            if (getusername.Text.Contains(" ") == true || getpassword.Text.Contains(" ") == true)
-            {
-                MessageBox.Show("Username and password cannot contain the space!!!");
-                return;
-            }
-            Send("20 " + getusername.Text + " " + getpassword.Text);
-            status = "Sign up ";
-            Receive();
-        }
-
-        private void signinbutton_Click(object sender, EventArgs e)
-        {
-            if (getusername.Text.Contains(" ") == true || getpassword.Text.Contains(" ") == true)
-            {
-                MessageBox.Show("Username and password cannot contain the space!!!");
-                return;
-            }
-            Send("10 " + getusername.Text + " " + getpassword.Text);
-            status = "Sign in ";
-            Receive();
-        }
 
         // ket noi den server
         void Connect()
@@ -159,6 +130,9 @@ namespace Client
                 signupbutton.Enabled = true;
                 getusername.Enabled = true;
                 getpassword.Enabled = true;
+                disconnectButton.Enabled = true;
+                first.Enabled = false;
+                getport.Enabled = false;
                 status = "sign";
 
                 //Hai doi tuong: reader: Doc tu client; writer: Viet cho Server
@@ -175,35 +149,6 @@ namespace Client
                 statusConnect.Text = "Connection failed!";
                 pressToConnect.Enabled = true;
                 return;
-            }
-        }
-
-        void getBankName_Money()
-        {   try
-            {
-                Send("30");
-                if (client.Poll(1, SelectMode.SelectRead) && client.Available == 0) throw new Exception("ERROR");
-                string data = reader.ReadLine();
-
-                string[] words = data.Split('_');
-
-                if (words[0] == "200")
-                {
-                    nameofbank.Text = words[1];
-                    for (int i = 2; i < words.Length; i++)
-                    {
-                        listRegion.Items.Add(words[i]);
-                    }
-                }
-            }
-            catch (Exception e)
-            {
-                Close();
-                pressToConnect.Enabled = false;
-                signinbutton.Enabled = false;
-                signupbutton.Enabled = false;
-                searchbutton.Enabled = false;
-                MessageBox.Show("Error on getting bank name, please reopen the client!" + e.ToString());
             }
         }
 
@@ -245,14 +190,25 @@ namespace Client
                 else
                     getExchange(data);
 
-            } catch  (Exception e)
+            } catch  
             {
                 Close();
-                pressToConnect.Enabled = false;
+                pressToConnect.Enabled = true;
                 signinbutton.Enabled = false;
                 signupbutton.Enabled = false;
                 searchbutton.Enabled = false;
-                MessageBox.Show("Error on recieving message, please reopen the client!" + e.ToString());
+                getusername.Enabled = false;
+                getpassword.Enabled = false;
+                listRegion.Enabled = false;
+                first.Enabled = true;
+                getport.Enabled = true;
+                searchResult.Text = "Search something";
+                disconnectButton.Enabled = false;
+                statusConnect.Text = "Not connected";
+                signStatus.Text = "Not connected";
+                listRegion.Items.Clear();
+                status = "connect";
+                MessageBox.Show("Error on recieving message, please reconnect to server!");
             }
         }
 
@@ -263,14 +219,41 @@ namespace Client
             if (!(client.Poll(1, SelectMode.SelectRead) && client.Available == 0)) writer.WriteLine(obj);
         }
 
-        void getExchange(string data)
+        #endregion
+
+        #region Action
+
+        // bam vao nut connect
+        private void pressToConnect_Click(object sender, EventArgs e)
         {
-            string[] words = data.Split(' ');
-            searchResult.Text = "Success";
-            money_type.Text = listRegion.SelectedItem.ToString();
-            buy_cash.Text = words[1];
-            buy_transfer.Text = words[2];
-            sell.Text = words[3];
+            ipaddress = first.Text;
+            Connect();
+        }
+
+        // bam vao nut sign up
+        private void signupbutton_Click(object sender, EventArgs e)
+        {
+            if (getusername.Text.Contains(" ") == true || getpassword.Text.Contains(" ") == true)
+            {
+                MessageBox.Show("Username and password cannot contain the space!!!");
+                return;
+            }
+            Send("20 " + getusername.Text + " " + getpassword.Text);
+            status = "Sign up ";
+            Receive();
+        }
+
+        // bam vao nut sign in
+        private void signinbutton_Click(object sender, EventArgs e)
+        {
+            if (getusername.Text.Contains(" ") == true || getpassword.Text.Contains(" ") == true)
+            {
+                MessageBox.Show("Username and password cannot contain the space!!!");
+                return;
+            }
+            Send("10 " + getusername.Text + " " + getpassword.Text);
+            status = "Sign in ";
+            Receive();
         }
 
         // dong ket noi khi dong form
@@ -280,6 +263,7 @@ namespace Client
                 Close();
         }
 
+        // bam vao nut tim kiem
         private void searchbutton_Click(object sender, EventArgs e)
         {
             if (listRegion.SelectedItem != null)
@@ -291,8 +275,79 @@ namespace Client
                 searchResult.Text = "Please choose something!";
         }
 
-       
+        // bam vao nut disconnect
+        private void disconnectButton_Click(object sender, EventArgs e)
+        {
+            Close();
+            status = "connect";
+            pressToConnect.Enabled = true;
+            signinbutton.Enabled = false;
+            signupbutton.Enabled = false;
+            searchbutton.Enabled = false;
+            getusername.Enabled = false;
+            getpassword.Enabled = false;
+            listRegion.Enabled = false;
+            first.Enabled = true;
+            getport.Enabled = true;
+            disconnectButton.Enabled = false;
+            statusConnect.Text = "Not connected"; 
+            signStatus.Text = "Not connected";
+            searchResult.Text = "Search something";
+            listRegion.Items.Clear();
+        }
 
+        // xu li khi ban nut tim kiem
+        void getExchange(string data)
+        {
+            string[] words = data.Split(' ');
+            searchResult.Text = "Success";
+            money_type.Text = listRegion.SelectedItem.ToString();
+            buy_cash.Text = words[1];
+            buy_transfer.Text = words[2];
+            sell.Text = words[3];
+        }
 
+        // lay ten ngan hang, v.v
+        void getBankName_Money()
+        {
+            try
+            {
+                Send("30");
+                if (client.Poll(1, SelectMode.SelectRead) && client.Available == 0) throw new Exception("ERROR");
+                string data = reader.ReadLine();
+
+                string[] words = data.Split('_');
+
+                if (words[0] == "200")
+                {
+                    nameofbank.Text = words[1];
+                    for (int i = 2; i < words.Length; i++)
+                    {
+                        listRegion.Items.Add(words[i]);
+                    }
+                }
+            }
+            catch
+            {
+                Close();
+                pressToConnect.Enabled = true;
+                signinbutton.Enabled = false;
+                signupbutton.Enabled = false;
+                searchbutton.Enabled = false;
+                getusername.Enabled = false;
+                getpassword.Enabled = false;
+                listRegion.Enabled = false;
+                first.Enabled = true;
+                searchResult.Text = "Search something";
+                status = "connect";
+                getport.Enabled = true;
+                disconnectButton.Enabled = false;
+                statusConnect.Text = "Not connected";
+                signStatus.Text = "Not connected";
+                listRegion.Items.Clear();
+                MessageBox.Show("Error on recieving message, please reconnect to server!");
+            }
+        }
+        #endregion
     }
 }

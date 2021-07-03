@@ -112,7 +112,7 @@ namespace Server
                     }
                     //MessageBox.Show(temp);
 
-                    exChanges = JsonConvert.DeserializeObject<ListExchange>(temp);
+                    exChanges = JsonConvert.DeserializeObject<ListExchange>(temp, new JsonSerializerSettings { FloatParseHandling = FloatParseHandling.Double });
 
                     lblStatus.Text = cbBank.SelectedValue.ToString() + " Last update: " + DateTime.Now.ToString("dd/MM/yyyy HH:mm");
                     return true;
@@ -285,6 +285,10 @@ namespace Server
                 int port = Int32.Parse(txtPort.Text);
                 server.Bind(new IPEndPoint(IPAddress.Parse(txtIP.Text), port));
                 server.Listen(20);
+                btnStart.Enabled = false;
+                txtPort.ReadOnly = true;
+                cbBank.Enabled = false;
+                tmUpdate.Start();
             }
             catch (Exception)
             {
@@ -371,10 +375,6 @@ namespace Server
             {
                 if (getData())
                 {
-                    btnStart.Enabled = false;
-                    txtPort.ReadOnly = true;
-                    cbBank.Enabled = false;
-                    tmUpdate.Start();
 
                     Thread thread = new Thread(() =>
                     {

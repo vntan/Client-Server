@@ -55,6 +55,7 @@ namespace Client
             this.panel1 = new System.Windows.Forms.Panel();
             this.nameofbank = new System.Windows.Forms.Label();
             this.bankName = new System.Windows.Forms.Label();
+            this.disconnectButton = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -90,9 +91,9 @@ namespace Client
             // 
             // pressToConnect
             // 
-            this.pressToConnect.Location = new System.Drawing.Point(50, 47);
+            this.pressToConnect.Location = new System.Drawing.Point(16, 38);
             this.pressToConnect.Name = "pressToConnect";
-            this.pressToConnect.Size = new System.Drawing.Size(193, 38);
+            this.pressToConnect.Size = new System.Drawing.Size(123, 38);
             this.pressToConnect.TabIndex = 9;
             this.pressToConnect.Text = "Connect";
             this.pressToConnect.UseMnemonic = false;
@@ -339,11 +340,24 @@ namespace Client
             this.bankName.TabIndex = 29;
             this.bankName.Text = "Bank:";
             // 
+            // disconnectButton
+            // 
+            this.disconnectButton.Enabled = false;
+            this.disconnectButton.Location = new System.Drawing.Point(152, 38);
+            this.disconnectButton.Name = "disconnectButton";
+            this.disconnectButton.Size = new System.Drawing.Size(123, 38);
+            this.disconnectButton.TabIndex = 30;
+            this.disconnectButton.Text = "Disconnect";
+            this.disconnectButton.UseMnemonic = false;
+            this.disconnectButton.UseVisualStyleBackColor = true;
+            this.disconnectButton.Click += new System.EventHandler(this.disconnectButton_Click);
+            // 
             // Client
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(302, 533);
+            this.Controls.Add(this.disconnectButton);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.signStatus);
             this.Controls.Add(this.signinbutton);
@@ -396,6 +410,7 @@ namespace Client
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Label nameofbank;
         private System.Windows.Forms.Label bankName;
+        private System.Windows.Forms.Button disconnectButton;
     }
 }
 
