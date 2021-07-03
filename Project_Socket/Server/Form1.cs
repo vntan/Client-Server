@@ -216,6 +216,17 @@ namespace Server
 
                             case "30":
                                 if (clientLogin[client.RemoteEndPoint.ToString()])
+                                {
+                                    if (cbBank.SelectedIndex >= 0)
+                                        writer.WriteLine("200 " + cbBank.SelectedValue.ToString());
+                                    
+                                    else writer.WriteLine("404");
+                                }
+                                else writer.WriteLine("401");
+                                break;
+
+                            case "40":
+                                if (clientLogin[client.RemoteEndPoint.ToString()])
                                 { 
                                     if (exChanges.Results.Count > 0)
                                     {
@@ -229,7 +240,7 @@ namespace Server
                                 else writer.WriteLine("401");
                                 break;
 
-                            case "40":
+                            case "50":
                                 if (clientLogin[client.RemoteEndPoint.ToString()])
                                 {
                                     if (words.Length == 2)
