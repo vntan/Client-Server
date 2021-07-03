@@ -245,7 +245,7 @@ namespace Client
             DisconnectUI();
         }
 
-        // xu li khi ban nut tim kiem
+        // xu li khi thay doi loai tien
         void getExchange(string data)
         {
             string[] words = data.Split('_');
@@ -290,8 +290,8 @@ namespace Client
             }
 
         }
-        #endregion
 
+        // thay doi loai tien
         private void cbCurrency_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (cbCurrency.SelectedIndex >= 0)
@@ -301,6 +301,7 @@ namespace Client
             }
         }
 
+        // xu li khi server ngat ket noi
         private void Client_Activated(object sender, EventArgs e)
         {
             if (!isExit)
@@ -310,9 +311,11 @@ namespace Client
                     {
                         CloseConnect();
                         DisconnectUI();
-                        MessageBox.Show("Error on recieving message, please reconnect to server!");
+                        MessageBox.Show("Server has close!");
                     }
                 }  
         }
+
+        #endregion
     }
 }
