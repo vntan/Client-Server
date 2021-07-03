@@ -18,7 +18,6 @@ namespace Server
         ListExchange exChanges;
         Dictionary<string, bool> clientLogin;
         Dictionary<string, string> users;
-        bool isUpdate = true;
 
         public frmServer()
         {
@@ -87,7 +86,7 @@ namespace Server
             return temp;
         }
 
-        void getData()
+        bool getData()
         {
             try
             {
@@ -115,10 +114,12 @@ namespace Server
                     exChanges = JsonConvert.DeserializeObject<ListExchange>(temp);
 
                     lblStatus.Text = cbBank.SelectedValue.ToString() + " Last update: " + DateTime.Now.ToString("dd/MM/yyyy HH:mm");
+                    return true;
                 }
             }
             catch (Exception e)
             {
+                return false;
             }
         }
 
@@ -168,13 +169,18 @@ namespace Server
                          *      Format: 20 <username> <password>
                          *      Reply: 200: Register Success
                          *             401: Register Fail
-                         * Get All Currency Code: 30 
+                         *Get Name Bank Code: 30 
                          *      Format: 30
+                         *      Reply: 200 <BankName> 
+                         *             401 Not Login
+                         *             404 Not Found
+                         * Get All Currency Code: 40 
+                         *      Format: 40
                          *      Reply: 200 <Currency1> <Currency2> .. <CurrencyN>
                          *             401 Not Login
                          *             404 Not Found
-                         * Currency Code: 40 
-                         *      Format: 40 <Currency>
+                         * Currency Code: 50 
+                         *      Format: 50 <Currency>
                          *      Reply: 200 <buy_cash> <buy_transfer> <sell>: Register Success
                          *             401: Not Login
                          *             404: Not found Currency.
@@ -324,12 +330,7 @@ namespace Server
 
         private void tmUpdate_Tick(object sender, EventArgs e)
         {
-            if (System.Net.NetworkInformation.NetworkInterface.GetIsNetworkAvailable())
-            {
-                getData();
-                isUpdate = false;
-            }
-            else isUpdate = true;
+            if (System.Net.NetworkInformation.NetworkInterface.GetIsNetworkAvailable()) getData();
         }
 
         public string GetLocalIPAddress()
@@ -353,13 +354,7 @@ namespace Server
             {
                 this.Text = "Server - Connected";
                 if (btnStart.Text != "Started") btnStart.Enabled = true;
-
                 txtIP.Text = GetLocalIPAddress();
-                if (isUpdate)
-                {
-                    isUpdate = false;
-                    getData();
-                }
             }
             else
             {
@@ -373,40 +368,36 @@ namespace Server
         {
             if (System.Net.NetworkInformation.NetworkInterface.GetIsNetworkAvailable())
             {
-                btnStart.Enabled = false;
-                txtPort.ReadOnly = true;
-
-                getData();
-                tmUpdate.Start();
-
-                Thread thread = new Thread(() =>
+                if (getData())
                 {
-                    try
-                    {
-                        connectServer();
-                    }
-                    catch (Exception ex)
-                    {
-                        MessageBox.Show(ex.ToString());
-                        return;
-                    }
-                });
+                    btnStart.Enabled = false;
+                    txtPort.ReadOnly = true;
+                    cbBank.Enabled = false;
+                    tmUpdate.Start();
 
-                thread.IsBackground = true;
-                thread.Start();
-                btnStart.Text = "Started";
-            }
-                
-        }
+                    Thread thread = new Thread(() =>
+                    {
+                        try
+                        {
+                            connectServer();
+                        }
+                        catch (Exception ex)
+                        {
+                            MessageBox.Show(ex.ToString());
+                            return;
+                        }
+                    });
 
-        private void cbBank_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (System.Net.NetworkInformation.NetworkInterface.GetIsNetworkAvailable())
-            {
-                getData();
-                isUpdate = false;
+                    thread.IsBackground = true;
+                    thread.Start();
+                    btnStart.Text = "Started";
+                }
+                else MessageBox.Show("Unable to get data.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+
             }
-            else isUpdate = true;
+            else MessageBox.Show("Network is not available.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            
+
         }
         #endregion
 

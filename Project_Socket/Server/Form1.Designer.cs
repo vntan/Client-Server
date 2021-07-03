@@ -120,7 +120,6 @@ namespace Server
             this.cbBank.Name = "cbBank";
             this.cbBank.Size = new System.Drawing.Size(185, 21);
             this.cbBank.TabIndex = 6;
-            this.cbBank.SelectedIndexChanged += new System.EventHandler(this.cbBank_SelectedIndexChanged);
             // 
             // txtPort
             // 
