@@ -35,6 +35,7 @@ namespace Server
             this.tmUpdate = new System.Windows.Forms.Timer(this.components);
             this.lblStatus = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.btnStop = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.cbBank = new System.Windows.Forms.ComboBox();
             this.txtPort = new System.Windows.Forms.TextBox();
@@ -93,10 +94,21 @@ namespace Server
             this.panel1.Controls.Add(this.lblIP);
             this.panel1.Controls.Add(this.txtIP);
             this.panel1.Controls.Add(this.btnStart);
+            this.panel1.Controls.Add(this.btnStop);
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(229, 189);
             this.panel1.TabIndex = 2;
+            // 
+            // btnStop
+            // 
+            this.btnStop.Location = new System.Drawing.Point(143, 140);
+            this.btnStop.Name = "btnStop";
+            this.btnStop.Size = new System.Drawing.Size(83, 30);
+            this.btnStop.TabIndex = 7;
+            this.btnStop.Text = "Stop Server";
+            this.btnStop.UseVisualStyleBackColor = true;
+            this.btnStop.Click += new System.EventHandler(this.btnStop_Click);
             // 
             // label1
             // 
@@ -217,6 +229,7 @@ namespace Server
             this.Controls.Add(this.lstClient);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.lblStatus);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "frmServer";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
@@ -248,6 +261,7 @@ namespace Server
         private System.Windows.Forms.ColumnHeader cName;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Button btnStop;
     }
 }
 

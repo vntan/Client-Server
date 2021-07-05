@@ -102,6 +102,8 @@ namespace Client
                             case "401":
                                 MessageBox.Show("Wrong username or password. Please check it again!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                                 break;
+                            case "502":
+                            default: throw new Exception("Error");
                         }
                         break;
                     case 20:
@@ -114,6 +116,8 @@ namespace Client
                             case "401":
                                 MessageBox.Show("Register Error!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                                 break;
+                            case "502":
+                            default: throw new Exception("Error");
                         }
 
                         break;
@@ -123,7 +127,7 @@ namespace Client
                     case 40:
                         getExchange(data);
                         break;
-       
+                    
                 }   
 
             }
@@ -155,7 +159,7 @@ namespace Client
             this.Text = "Client";
             pnLogin.Visible = true;
             pnResearch.Visible = false;
-            this.Height = 360;
+            this.Height = 330;
 
         }
 
@@ -183,7 +187,7 @@ namespace Client
             this.Text = "Client - " + txtUserName.Text;
             pnLogin.Visible = false;
             pnResearch.Visible = true;
-            this.Height = 457;
+            this.Height = 440;
         }
 
         #endregion
@@ -228,16 +232,6 @@ namespace Client
             CloseConnect();  
         }
 
-        // bam vao nut tim kiem
-        private void btnSearch_Click(object sender, EventArgs e)
-        {
-            if (cbCurrency.SelectedIndex < 0)
-            {
-                Send("40_" + cbCurrency.SelectedItem.ToString()); 
-                Receive(40);
-            }
-        }
-
         // bam vao nut disconnect
         private void btnDisconnect_Click(object sender, EventArgs e)
         {
@@ -265,6 +259,8 @@ namespace Client
                 case "404":
                     MessageBox.Show("Not Found Data!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     break;
+                case "502":
+                default: throw new Exception("Error");
             }
 
         }
@@ -287,6 +283,8 @@ namespace Client
                 case "404":
                     MessageBox.Show("Error Data In Server!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     break;
+                case "502":
+                default: throw new Exception("Error");
             }
 
         }

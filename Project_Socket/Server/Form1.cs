@@ -1,13 +1,11 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using Server.Class;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
-using System.Text;
 using System.Threading;
 using System.Windows.Forms;
 
@@ -15,9 +13,12 @@ namespace Server
 {
     public partial class frmServer : Form
     {
+        bool isConnect = false;
+        Socket server;
         ListExchange exChanges;
-        Dictionary<string, bool> clientLogin;
+        Dictionary<string, bool> clientIsLogin;
         Dictionary<string, string> users;
+        List<Socket> listClient;
 
         public frmServer()
         {
@@ -25,8 +26,9 @@ namespace Server
             lblStatus.Text = "No update found";
             cbBank.DataSource = Constant.Instance.listBank.Keys.ToList();
             cbBank.SelectedIndex = 0;
-            clientLogin = new Dictionary<string, bool>();
+            clientIsLogin = new Dictionary<string, bool>();
             users = new Dictionary<string, string>();
+            listClient = new List<Socket>();
             Control.CheckForIllegalCrossThreadCalls = false;
         }
 
@@ -54,12 +56,12 @@ namespace Server
         void writeDataClient(string username, string password)
         {
             if (users.Count > 0)
-              File.AppendAllText(AppDomain.CurrentDomain.BaseDirectory + "dataUser.txt", Environment.NewLine + username + " " + password);
+                File.AppendAllText(AppDomain.CurrentDomain.BaseDirectory + "dataUser.txt", Environment.NewLine + username + " " + password);
             else
             {
                 File.AppendAllText(AppDomain.CurrentDomain.BaseDirectory + "dataUser.txt", username + " " + password);
             }
-                
+
         }
         #endregion
 
@@ -140,31 +142,33 @@ namespace Server
             return users.ContainsKey(username) && users[username] == password;
         }
 
-        void Process(Socket client)
+        void Process(int index)
         {
-            clientLogin.Add(client.RemoteEndPoint.ToString(), false);
-           
-            ListViewItem item = new ListViewItem(client.RemoteEndPoint.ToString());
+            clientIsLogin.Add(listClient[index].RemoteEndPoint.ToString(), false);
+
+            ListViewItem item = new ListViewItem(listClient[index].RemoteEndPoint.ToString());
             ListViewItem.ListViewSubItem subitem = new ListViewItem.ListViewSubItem(item, "Unknown");
             item.SubItems.Add(subitem);
             lstClient.Items.Add(item);
             try
             {
                 bool isContinue = true;
-                var stream = new NetworkStream(client);
+                var stream = new NetworkStream(listClient[index]);
                 var reader = new StreamReader(stream);
                 var writer = new StreamWriter(stream);
                 writer.AutoFlush = true;
                 //Server sent data to client
                 writer.WriteLine("202");
 
-                while (isContinue)
+                while (isContinue && isConnect)
                 {
                     // read data client send
                     string code = reader.ReadLine();
                     //MessageBox.Show(code);
-                    if (!string.IsNullOrEmpty(code))
+                    if (listClient.Count == 0 || !listClient[index].Connected) break;
+                    if (!string.IsNullOrEmpty(code) && isConnect)
                     {
+                        Socket client = listClient[index];
                         string[] words = code.Split('_');
                         /* Client code format send
                          * Login Code: 10 
@@ -197,7 +201,7 @@ namespace Server
                                     if (checkLogin(words[1], words[2]))
                                     {
                                         lstClient.FindItemWithText(client.RemoteEndPoint.ToString()).SubItems[1].Text = words[1];
-                                        clientLogin[client.RemoteEndPoint.ToString()] = true;
+                                        clientIsLogin[client.RemoteEndPoint.ToString()] = true;
                                         writer.WriteLine("200");
                                     }
                                     else writer.WriteLine("401");
@@ -213,7 +217,7 @@ namespace Server
                                     readDataClient();
                                     if (!string.IsNullOrEmpty(words[1]) && !string.IsNullOrEmpty(words[2]) && words[1].All(c => Char.IsLetterOrDigit(c)) && words[2].All(c => Char.IsLetterOrDigit(c)) && !users.ContainsKey(words[1]))
                                     {
- 
+
                                         writeDataClient(words[1], words[2]);
                                         users.Add(words[1], words[2]);
                                         writer.WriteLine("200");
@@ -224,13 +228,13 @@ namespace Server
                                 break;
 
                             case "30":
-                                if (clientLogin[client.RemoteEndPoint.ToString()])
-                                { 
+                                if (clientIsLogin[client.RemoteEndPoint.ToString()])
+                                {
 
                                     if (exChanges.Results.Count > 0 && cbBank.SelectedIndex >= 0)
                                     {
                                         string temp = String.Empty;
-                                        foreach(Exchange e in exChanges.Results) temp += e.currency + "_";
+                                        foreach (Exchange e in exChanges.Results) temp += e.currency + "_";
                                         temp = temp.Remove(temp.Length - 1, 1);
                                         writer.WriteLine("200_" + cbBank.SelectedValue.ToString() + "_" + temp);
                                     }
@@ -240,12 +244,13 @@ namespace Server
                                 break;
 
                             case "40":
-                                if (clientLogin[client.RemoteEndPoint.ToString()])
+                                if (clientIsLogin[client.RemoteEndPoint.ToString()])
                                 {
                                     if (words.Length == 2)
                                     {
                                         Exchange find = exChanges.findData(words[1]);
-                                        if (find != null) {
+                                        if (find != null)
+                                        {
                                             writer.WriteLine(String.Format("200_{0}_{1}_{2}", find.buy_cash, find.buy_transfer, find.sell));
                                         }
                                         else writer.WriteLine("404");
@@ -262,73 +267,97 @@ namespace Server
                     }
 
                     try
-                        {
-                            isContinue = !(client.Poll(1, SelectMode.SelectRead) && client.Available == 0);
-                        }
-                        catch (SocketException) { isContinue = false; }
-                    
+                    {
+                        isContinue = !(listClient[index].Poll(1, SelectMode.SelectRead) && listClient[index].Available == 0);
+                    }
+                    catch (SocketException) { isContinue = false; }
+
                 }
                 stream.Close();
             }
             catch (Exception ex)
             {
-                Console.WriteLine("Error: " + ex);
+                // MessageBox.Show("Error CLient: " + ex);
+                return;
             }
 
             //MessageBox.Show("Exit "+ client.RemoteEndPoint);
-            lstClient.Items.Remove(lstClient.FindItemWithText(client.RemoteEndPoint.ToString()));
-            client.Close();
+            if (listClient.Count != 0)
+            {
+                lstClient.Items.Remove(lstClient.FindItemWithText(listClient[index].RemoteEndPoint.ToString()));
+                listClient[index].Close();
+                listClient.RemoveAt(index);
+            }
         }
 
         void connectServer()
         {
-            //Create new server 
-            Socket server = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-            //server.ReceiveTimeout = 60000;
-            //server.SendTimeout = 60000;
-
-            // Start listening.
             try
             {
-                // add IP & Port to server
-                int port = Int32.Parse(txtPort.Text);
-                server.Bind(new IPEndPoint(IPAddress.Parse(txtIP.Text), port));
-                server.Listen(20);
-                btnStart.Text = "Started";
-                btnStart.Enabled = false;
-                txtPort.ReadOnly = true;
-                cbBank.Enabled = false;
-                tmUpdate.Start();
+                //Create new server 
+                server = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+                //server.ReceiveTimeout = 60000;
+                //server.SendTimeout = 60000;
+
+                // Start listening.
+                try
+                {
+                    // add IP & Port to server
+                    int port = Int32.Parse(txtPort.Text);
+                    server.Bind(new IPEndPoint(IPAddress.Parse(txtIP.Text), port));
+                    server.Listen(20);
+                    btnStart.Enabled = false;
+                    btnStop.Enabled = true;
+                    txtPort.ReadOnly = true;
+                    cbBank.Enabled = false;
+                    tmUpdate.Start();
+                    btnStop.Visible = true;
+                    btnStart.Visible = false;
+                    isConnect = true;
+                }
+                catch (Exception)
+                {
+                    return;
+                }
+
+
+                while (isConnect)
+                {
+                    // Accept all client connected
+                    if (isConnect)
+                    {
+                        Socket client = server.Accept();
+
+                        Thread processClient = new Thread(() =>
+                        {
+                            try
+                            {
+                                // Process data that users sended
+                                listClient.Add(client);
+                                Process(listClient.Count - 1);
+                            }
+
+                            catch (Exception ex)
+                            {
+                                //MessageBox.Show("Server close." + ex.ToString());
+                                return;
+                            }
+                            return;
+                        });
+
+                        processClient.IsBackground = true;
+                        if (isConnect) processClient.Start();
+                    }
+
+                }
             }
-            catch (Exception)
+            catch(SocketException e)
             {
                 return;
             }
 
 
-            while (true)
-            {
-                // Accept all client connected
-                Socket client = server.Accept();
-                
-                Thread processClient = new Thread(() =>
-                {
-                    try
-                    {
-                        // Process data that users sended
-                        Process(client);
-                    }
 
-                    catch (Exception ex)
-                    {
-                        MessageBox.Show(ex.ToString());
-                    }
-                });
-
-                processClient.IsBackground = true;
-                processClient.Start();
-
-            }
         }
 
         #endregion
@@ -342,6 +371,7 @@ namespace Server
         private void frmServer_FormClosing(object sender, FormClosingEventArgs e)
         {
             tmUpdate.Stop();
+            if (server!= null) server.Close();
         }
 
         private void tmUpdate_Tick(object sender, EventArgs e)
@@ -398,21 +428,47 @@ namespace Server
                             MessageBox.Show(ex.ToString());
                             return;
                         }
+
+                        return;
                     });
 
                     thread.IsBackground = true;
                     thread.Start();
-                    
                 }
                 else MessageBox.Show("Unable to get data.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
 
             }
             else MessageBox.Show("Network is not available.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            
+
 
         }
+
         #endregion
 
+        private void btnStop_Click(object sender, EventArgs e)
+        {
+            isConnect = false;
+            if (server != null)
+            {
+                server.Close();
+                if (listClient != null)
+                {
+                    foreach (Socket s in listClient)
+                    {
+                        lstClient.Items.Remove(lstClient.FindItemWithText(s.RemoteEndPoint.ToString()));
+                        s.Close();
+                    }
+                    listClient.Clear();
+                }
 
+            }
+            btnStart.Enabled = true;
+            btnStop.Enabled = false;
+            txtPort.ReadOnly = false;
+            cbBank.Enabled = true;
+            tmUpdate.Stop();
+            btnStop.Visible = false;
+            btnStart.Visible = true;
+        }
     }
 }

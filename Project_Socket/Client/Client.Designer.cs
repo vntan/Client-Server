@@ -252,9 +252,9 @@ namespace Client
             this.pnResearch.Controls.Add(this.label7);
             this.pnResearch.Controls.Add(this.lbBuyCash);
             this.pnResearch.Controls.Add(this.label8);
-            this.pnResearch.Location = new System.Drawing.Point(13, 148);
+            this.pnResearch.Location = new System.Drawing.Point(14, 138);
             this.pnResearch.Name = "pnResearch";
-            this.pnResearch.Size = new System.Drawing.Size(278, 274);
+            this.pnResearch.Size = new System.Drawing.Size(274, 268);
             this.pnResearch.TabIndex = 33;
             this.pnResearch.Visible = false;
             // 
@@ -291,13 +291,16 @@ namespace Client
             // 
             // cbCurrency
             // 
+            this.cbCurrency.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.cbCurrency.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbCurrency.Enabled = false;
             this.cbCurrency.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cbCurrency.FormattingEnabled = true;
-            this.cbCurrency.Location = new System.Drawing.Point(8, 49);
+            this.cbCurrency.Location = new System.Drawing.Point(13, 46);
+            this.cbCurrency.MaxDropDownItems = 5;
             this.cbCurrency.Name = "cbCurrency";
-            this.cbCurrency.Size = new System.Drawing.Size(169, 24);
+            this.cbCurrency.Size = new System.Drawing.Size(250, 24);
             this.cbCurrency.TabIndex = 17;
             this.cbCurrency.SelectedIndexChanged += new System.EventHandler(this.cbCurrency_SelectedIndexChanged);
             // 
@@ -395,13 +398,14 @@ namespace Client
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(302, 297);
+            this.ClientSize = new System.Drawing.Size(303, 291);
             this.Controls.Add(this.pnLogin);
             this.Controls.Add(this.pnResearch);
             this.Controls.Add(this.pnServer);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Client";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Client";
             this.Activated += new System.EventHandler(this.Client_Activated);
             this.Deactivate += new System.EventHandler(this.Client_Activated);
