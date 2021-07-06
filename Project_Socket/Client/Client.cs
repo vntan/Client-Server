@@ -30,6 +30,8 @@ namespace Client
 
 
         #region Socket
+
+        // xu li khi nhan nut tat
         void CloseConnect()
         {
             if (client != null)
