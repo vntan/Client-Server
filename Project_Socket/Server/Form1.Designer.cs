@@ -65,7 +65,7 @@ namespace Server
             // tmUpdate
             // 
             this.tmUpdate.Enabled = true;
-            this.tmUpdate.Interval = 60000;
+            this.tmUpdate.Interval = 1800000;
             this.tmUpdate.Tick += new System.EventHandler(this.tmUpdate_Tick);
             // 
             // lblStatus
