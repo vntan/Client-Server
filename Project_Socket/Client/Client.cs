@@ -116,6 +116,8 @@ namespace Client
                         {
                             case "200":
                                 MessageBox.Show("Register success. Please login again!", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                                txtUserName.Text = "";
+                                txtPassword.Text = "";
                                 break;
                             case "401":
                                 MessageBox.Show("Register Error!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);

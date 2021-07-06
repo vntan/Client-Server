@@ -210,7 +210,7 @@ namespace Server
                          *             404 Not Found
                          * Currency Code: 40 
                          *      Format: 40_<Currency>
-                         *      Reply: 200_<buy_cash>_<buy_transfer>_<sell>: Register Success
+                         *      Reply: 200_<buy_cash>_<buy_transfer>_<sell>
                          *             401: Not Login
                          *             404: Not found Currency.
                          */
