@@ -443,8 +443,6 @@ namespace Server
 
         }
 
-        #endregion
-
         private void btnStop_Click(object sender, EventArgs e)
         {
             isConnect = false;
@@ -470,5 +468,7 @@ namespace Server
             btnStop.Visible = false;
             btnStart.Visible = true;
         }
+
+        #endregion
     }
 }

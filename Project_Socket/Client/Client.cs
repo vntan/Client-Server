@@ -62,11 +62,11 @@ namespace Client
                 writer.AutoFlush = true;
 
                 string connectStatus = reader.ReadLine();
-                if (connectStatus != "202") throw new Exception("Connect Failed!");
+                if (connectStatus != "202") throw new Exception("Connection failed!");
             }
             catch
             {
-                MessageBox.Show("Connect Failed. Please check it again!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Connection failed. Please check it again!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 statusConnect.Text = "Connection failed!";
                 btnConnect.Enabled = true;
                 return;
@@ -111,7 +111,7 @@ namespace Client
                         switch (data)
                         {
                             case "200":
-                                MessageBox.Show("Register Success. Please login again!", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                                MessageBox.Show("Register success. Please login again!", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
                                 break;
                             case "401":
                                 MessageBox.Show("Register Error!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -205,7 +205,7 @@ namespace Client
         {
             if (txtUserName.Text.Contains(" ") == true || txtPassword.Text.Contains(" ") == true)
             {
-                MessageBox.Show("Username and password cannot contain the space!!!");
+                MessageBox.Show("Username and password cannot contain the spaces!!!");
                 return;
             }
             Send("20_" + txtUserName.Text + "_" + txtPassword.Text); 
@@ -218,7 +218,7 @@ namespace Client
         {
             if (txtUserName.Text.Contains("_") || txtPassword.Text.Contains("_"))
             {
-                MessageBox.Show("Username and password cannot contain the space!!!");
+                MessageBox.Show("Username and password cannot contain the spaces!!!");
                 return;
             }
             Send("10_" + txtUserName.Text + "_" + txtPassword.Text);
@@ -253,11 +253,11 @@ namespace Client
                     sell.Text = words[3];
                     break;
                 case "401":
-                    MessageBox.Show("Please Login Again!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show("Please login again!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
 
                     break;
                 case "404":
-                    MessageBox.Show("Not Found Data!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show("Data not found !", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     break;
                 case "502":
                 default: throw new Exception("Error");
@@ -277,11 +277,11 @@ namespace Client
                     for (int i = 2; i < words.Length; i++) cbCurrency.Items.Add(words[i]);
                     break;
                 case "401":
-                    MessageBox.Show("Please Login Again!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show("Please login again!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
 
                     break;
                 case "404":
-                    MessageBox.Show("Error Data In Server!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show("Error data in server!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     break;
                 case "502":
                 default: throw new Exception("Error");
@@ -309,7 +309,7 @@ namespace Client
                     {
                         CloseConnect();
                         DisconnectUI();
-                        MessageBox.Show("Server has close!");
+                        MessageBox.Show("Server has closed!");
                     }
                 }  
         }
