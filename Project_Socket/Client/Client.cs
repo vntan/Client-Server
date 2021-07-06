@@ -36,9 +36,11 @@ namespace Client
             {
                 client.Close(); 
                 client = null;
-                reader.Close();
-                writer.Close();
             }
+            if (reader != null)
+                reader.Close();
+            if (writer != null)
+                writer.Close();
         }
 
         // ket noi den server
