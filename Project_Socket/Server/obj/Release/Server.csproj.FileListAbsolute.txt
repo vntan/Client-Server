@@ -1,0 +1,13 @@
+D:\MMT\Client-Server\Project_Socket\Server\bin\Release\ServerSocket.exe.config
+D:\MMT\Client-Server\Project_Socket\Server\bin\Release\ServerSocket.exe
+D:\MMT\Client-Server\Project_Socket\Server\bin\Release\ServerSocket.pdb
+D:\MMT\Client-Server\Project_Socket\Server\bin\Release\Newtonsoft.Json.dll
+D:\MMT\Client-Server\Project_Socket\Server\bin\Release\Newtonsoft.Json.xml
+D:\MMT\Client-Server\Project_Socket\Server\obj\Release\Server.csproj.AssemblyReference.cache
+D:\MMT\Client-Server\Project_Socket\Server\obj\Release\Server.frmServer.resources
+D:\MMT\Client-Server\Project_Socket\Server\obj\Release\ServerSocket.Properties.Resources.resources
+D:\MMT\Client-Server\Project_Socket\Server\obj\Release\Server.csproj.GenerateResource.cache
+D:\MMT\Client-Server\Project_Socket\Server\obj\Release\Server.csproj.CoreCompileInputs.cache
+D:\MMT\Client-Server\Project_Socket\Server\obj\Release\Server.csproj.CopyComplete
+D:\MMT\Client-Server\Project_Socket\Server\obj\Release\ServerSocket.exe
+D:\MMT\Client-Server\Project_Socket\Server\obj\Release\ServerSocket.pdb

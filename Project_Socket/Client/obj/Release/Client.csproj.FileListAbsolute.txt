@@ -1,0 +1,10 @@
+D:\MMT\Client-Server\Project_Socket\Client\bin\Release\ClientSocket.exe.config
+D:\MMT\Client-Server\Project_Socket\Client\bin\Release\ClientSocket.exe
+D:\MMT\Client-Server\Project_Socket\Client\bin\Release\ClientSocket.pdb
+D:\MMT\Client-Server\Project_Socket\Client\obj\Release\Client.csproj.AssemblyReference.cache
+D:\MMT\Client-Server\Project_Socket\Client\obj\Release\Client.Client.resources
+D:\MMT\Client-Server\Project_Socket\Client\obj\Release\ClientSocket.Properties.Resources.resources
+D:\MMT\Client-Server\Project_Socket\Client\obj\Release\Client.csproj.GenerateResource.cache
+D:\MMT\Client-Server\Project_Socket\Client\obj\Release\Client.csproj.CoreCompileInputs.cache
+D:\MMT\Client-Server\Project_Socket\Client\obj\Release\ClientSocket.exe
+D:\MMT\Client-Server\Project_Socket\Client\obj\Release\ClientSocket.pdb
