@@ -35,7 +35,6 @@ namespace Server
             this.tmUpdate = new System.Windows.Forms.Timer(this.components);
             this.lblStatus = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.btnStop = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.cbBank = new System.Windows.Forms.ComboBox();
             this.txtPort = new System.Windows.Forms.TextBox();
@@ -43,6 +42,7 @@ namespace Server
             this.lblPort = new System.Windows.Forms.Label();
             this.lblIP = new System.Windows.Forms.Label();
             this.txtIP = new System.Windows.Forms.TextBox();
+            this.btnStop = new System.Windows.Forms.Button();
             this.lstClient = new System.Windows.Forms.ListView();
             this.cIP = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.cName = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -76,9 +76,9 @@ namespace Server
             this.lblStatus.Location = new System.Drawing.Point(172, 192);
             this.lblStatus.Name = "lblStatus";
             this.lblStatus.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-            this.lblStatus.Size = new System.Drawing.Size(63, 13);
+            this.lblStatus.Size = new System.Drawing.Size(92, 13);
             this.lblStatus.TabIndex = 1;
-            this.lblStatus.Text = "Last update";
+            this.lblStatus.Text = "No Update Found";
             this.lblStatus.TextAlign = System.Drawing.ContentAlignment.BottomRight;
             // 
             // panel1
@@ -99,16 +99,6 @@ namespace Server
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(229, 189);
             this.panel1.TabIndex = 2;
-            // 
-            // btnStop
-            // 
-            this.btnStop.Location = new System.Drawing.Point(143, 140);
-            this.btnStop.Name = "btnStop";
-            this.btnStop.Size = new System.Drawing.Size(83, 30);
-            this.btnStop.TabIndex = 7;
-            this.btnStop.Text = "Stop Server";
-            this.btnStop.UseVisualStyleBackColor = true;
-            this.btnStop.Click += new System.EventHandler(this.btnStop_Click);
             // 
             // label1
             // 
@@ -181,6 +171,16 @@ namespace Server
             this.txtIP.ReadOnly = true;
             this.txtIP.Size = new System.Drawing.Size(185, 20);
             this.txtIP.TabIndex = 1;
+            // 
+            // btnStop
+            // 
+            this.btnStop.Location = new System.Drawing.Point(143, 140);
+            this.btnStop.Name = "btnStop";
+            this.btnStop.Size = new System.Drawing.Size(83, 30);
+            this.btnStop.TabIndex = 7;
+            this.btnStop.Text = "Stop Server";
+            this.btnStop.UseVisualStyleBackColor = true;
+            this.btnStop.Click += new System.EventHandler(this.btnStop_Click);
             // 
             // lstClient
             // 

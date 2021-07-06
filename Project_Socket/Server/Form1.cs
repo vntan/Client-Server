@@ -23,7 +23,13 @@ namespace Server
         public frmServer()
         {
             InitializeComponent();
-            lblStatus.Text = "No update found";
+            initData();
+        }
+
+        #region Process
+        //Khoi tao du lieu
+        void initData()
+        {
             cbBank.DataSource = Constant.Instance.listBank.Keys.ToList();
             cbBank.SelectedIndex = 0;
             clientIsLogin = new Dictionary<string, bool>();
@@ -31,8 +37,26 @@ namespace Server
             listClient = new List<Socket>();
             Control.CheckForIllegalCrossThreadCalls = false;
         }
+        //Lay dia chi IP
+        public string GetLocalIPAddress()
+        {
+
+            var host = Dns.GetHostEntry(Dns.GetHostName());
+            foreach (var ip in host.AddressList)
+            {
+                if (ip.AddressFamily == AddressFamily.InterNetwork)
+                {
+                    return ip.ToString();
+                }
+            }
+            return "No network adapters with an IPv4 address in the system!";
+
+        }
+
+        #endregion
 
         #region Read Data User
+        //Doc du lieu tu file
         void readDataClient()
         {
             if (File.Exists(AppDomain.CurrentDomain.BaseDirectory + "dataUser.txt"))
@@ -52,7 +76,7 @@ namespace Server
                 }
             }
         }
-
+        //Them username password vao trong file
         void writeDataClient(string username, string password)
         {
             if (users.Count > 0)
@@ -62,6 +86,11 @@ namespace Server
                 File.AppendAllText(AppDomain.CurrentDomain.BaseDirectory + "dataUser.txt", username + " " + password);
             }
 
+        }
+        //Kiem tra ten dang nhap va mat khau
+        bool checkLogin(string username, string password)
+        {
+            return users.ContainsKey(username) && users[username] == password;
         }
         #endregion
 
@@ -136,13 +165,8 @@ namespace Server
         #endregion
 
         #region Socket
-
-        bool checkLogin(string username, string password)
-        {
-            return users.ContainsKey(username) && users[username] == password;
-        }
-
-        void Process(int index)
+        //Xu ly du lieu gui va nhan cua client
+        void process(int index)
         {
             clientIsLogin.Add(listClient[index].RemoteEndPoint.ToString(), false);
 
@@ -289,20 +313,19 @@ namespace Server
                 listClient.RemoveAt(index);
             }
         }
-
+        //Ket noi server
         void connectServer()
         {
             try
             {
-                //Create new server 
+                //Tao moi mot server
                 server = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
                 //server.ReceiveTimeout = 60000;
                 //server.SendTimeout = 60000;
 
-                // Start listening.
+                // them IP & Port
                 try
                 {
-                    // add IP & Port to server
                     int port = Int32.Parse(txtPort.Text);
                     server.Bind(new IPEndPoint(IPAddress.Parse(txtIP.Text), port));
                     server.Listen(20);
@@ -320,7 +343,7 @@ namespace Server
                     return;
                 }
 
-
+                //Neu ket noi thi xu ly ket noi cua client
                 while (isConnect)
                 {
                     // Accept all client connected
@@ -334,7 +357,7 @@ namespace Server
                             {
                                 // Process data that users sended
                                 listClient.Add(client);
-                                Process(listClient.Count - 1);
+                                process(listClient.Count - 1);
                             }
 
                             catch (Exception ex)
@@ -359,6 +382,25 @@ namespace Server
 
 
         }
+        //Dong Server
+        void closeServer()
+        {
+            isConnect = false;
+            if (server != null)
+            {
+                server.Close();
+                if (listClient != null)
+                {
+                    foreach (Socket s in listClient)
+                    {
+                        lstClient.Items.Remove(lstClient.FindItemWithText(s.RemoteEndPoint.ToString()));
+                        s.Close();
+                    }
+                    listClient.Clear();
+                }
+
+            }
+        }
 
         #endregion
 
@@ -371,27 +413,12 @@ namespace Server
         private void frmServer_FormClosing(object sender, FormClosingEventArgs e)
         {
             tmUpdate.Stop();
-            if (server!= null) server.Close();
+            closeServer();
         }
 
         private void tmUpdate_Tick(object sender, EventArgs e)
         {
             if (System.Net.NetworkInformation.NetworkInterface.GetIsNetworkAvailable()) getData();
-        }
-
-        public string GetLocalIPAddress()
-        {
-
-            var host = Dns.GetHostEntry(Dns.GetHostName());
-            foreach (var ip in host.AddressList)
-            {
-                if (ip.AddressFamily == AddressFamily.InterNetwork)
-                {
-                    return ip.ToString();
-                }
-            }
-            return "No network adapters with an IPv4 address in the system!";
-
         }
 
         private void frmServer_Activated(object sender, EventArgs e)
@@ -445,21 +472,9 @@ namespace Server
 
         private void btnStop_Click(object sender, EventArgs e)
         {
-            isConnect = false;
-            if (server != null)
-            {
-                server.Close();
-                if (listClient != null)
-                {
-                    foreach (Socket s in listClient)
-                    {
-                        lstClient.Items.Remove(lstClient.FindItemWithText(s.RemoteEndPoint.ToString()));
-                        s.Close();
-                    }
-                    listClient.Clear();
-                }
-
-            }
+            closeServer();
+            
+            //Update UI
             btnStart.Enabled = true;
             btnStop.Enabled = false;
             txtPort.ReadOnly = false;
